@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Summer's IoT Dashboard</title>
+    <meta charset="UTF-8" />
+    <!-- ideal viewport -->
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0"
+    />
+    <base target="_blank" />
+    <!-- introduce .css -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body class="w">
+    <h2>🌶️ Summer's Agricultural IoT</h2>
+
+    <!-- robot car -->
+    <section>
+      <div class="container">
+        <!-- L: Tilt Controls -->
+        <div class="section tilt-controls">
+          <button
+            onpointerdown="startTiltCommand('U', this)"
+            onpointerup="stopTiltCommand(this)"
+          >
+            Tilt Up
+          </button>
+          <button
+            onpointerdown="startTiltCommand('D', this)"
+            onpointerup="stopTiltCommand(this)"
+          >
+            Tilt Down
+          </button>
+        </div>
+
+        <!-- Middle: Live Video from ESP32-CAM -->
+        <div class="section">
+          <!-- <img class="video-feed" src="" alt="Live Feed from ESP32-CAM" /> -->
+          <!-- This opens the stream in a new tab without Mixed Content issue -->
+          <a
+            class="video-feed"
+            href=""
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button>📷 Open</button>
+          </a>
+        </div>
+
+        <!-- R: Movement Controls -->
+        <div class="section">
+          <div class="direction-grid">
+            <div></div>
+            <button
+              onpointerdown="startDirectionCommand('F', this)"
+              onpointerup="stopDirectionCommand(this)"
+            >
+              ⬆
+            </button>
+            <div></div>
+
+            <button
+              onpointerdown="startDirectionCommand('L', this)"
+              onpointerup="stopDirectionCommand(this)"
+            >
+              ⬅
+            </button>
+            <button
+              class="stop"
+              style="font-size: 30px"
+              onpointerdown="startDirectionCommand('S', this)"
+              onpointerup="stopDirectionCommand(this)"
+            >
+              ⏹
+            </button>
+            <button
+              onpointerdown="startDirectionCommand('R', this)"
+              onpointerup="stopDirectionCommand(this)"
+            >
+              ➡
+            </button>
+
+            <div></div>
+            <button
+              onpointerdown="startDirectionCommand('B', this)"
+              onpointerup="stopDirectionCommand(this)"
+            >
+              ⬇
+            </button>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- pump -->
+    <section>
+      <ul class="clearfix">
+        <li class="icard">
+          <button
+            style="width: 100px"
+            onpointerdown="startIrrigationCommand('C', this)"
+            onpointerup="stopIrrigationCommand(this)"
+          >
+            Clear
+          </button>
+        </li>
+        <li class="icard">
+          <button
+            onpointerdown="startIrrigationCommand('W', this)"
+            onpointerup="stopIrrigationCommand(this)"
+          >
+            🚿 Watering
+          </button>
+        </li>
+        <li class="icard">
+          <input
+            type="number"
+            id="irrigationAmount"
+            placeholder="Enter mL"
+            step="10"
+            onkeydown="if(event.key==='Enter'){ sendIrrigationQuota(); }"
+            onkeyup="if(event.key==='Enter'){ endIrrigationQuota(); }"
+          />
+        </li>
+        <li class="icard">
+          <button
+            style="width: 100px"
+            onpointerdown="sendIrrigationQuota('#', this)"
+            onpointerup="endIrrigationQuota('#', this)"
+          >
+            Set Quota
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <!-- BLE status -->
+    <section>
+      <!-- <span>BLE status: </span>
+      <span id="BLE">unknown</span>
+      <span class="spacer"></span> -->
+      <span>Quota: </span>
+      <span id="quota">unknown</span>
+    </section>
+
+    <!-- decision -->
+    <section>
+      <ul class="clearfix">
+        <li class="card">
+          <button
+            onpointerdown="startIrrigationCommand('A', this)"
+            onpointerup="stopIrrigationCommand(this)"
+          >
+            <h3 id="automationMode">Decision</h3>
+            <p id="decision">unknown</p>
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <!-- assessment -->
+    <section>
+      <ul class="clearfix">
+        <li class="card">
+          <h3>🪴 Growth Stage</h3>
+          <p id="growing stage">unknown</p>
+        </li>
+        <li class="card">
+          <h3>🌱 Moisture Content</h3>
+          <p id="soil quality">unknown</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- environment -->
+    <section>
+      <ul class="clearfix">
+        <li class="card">
+          <h3>🌡️ Temperature</h3>
+          <p id="temperature">-- °C</p>
+        </li>
+
+        <li class="card">
+          <h3>💦 Humidity</h3>
+          <p id="humidity">-- %</p>
+        </li>
+
+        <li class="card">
+          <h3>💧 Soil Moisture</h3>
+          <p id="moisture">-- %</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- flowmeter -->
+    <section>
+      <ul class="clearfix">
+        <li class="card">
+          <h3>🌊 Last Flow Rate</h3>
+          <p id="flowRate">-- L/min</p>
+        </li>
+
+        <li class="card">
+          <h3>🌊 Last Irrigation</h3>
+          <p id="singleMl">-- mL</p>
+        </li>
+
+        <div class="inserter"></div>
+
+        <li class="card">
+          <h3>🌊 Irrigation Counter</h3>
+          <p id="irrigationTimes">-- times</p>
+        </li>
+
+        <li class="card">
+          <h3>🌊 Total Irrigation</h3>
+          <p id="totalMl">-- mL</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <!-- introduce .js -->
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="es6.css" />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        list-style: none;
+      }
+
+      img {
+        vertical-align: middle;
+      }
+      /* tab栏切换 */
+
+      .tab {
+        border: 1px solid bisque;
+        width: 800px;
+      }
+
+      .tab ul {
+        overflow: hidden;
+      }
+      /* tabNav */
+
+      nav {
+        width: 800px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tabNav li {
+        float: left;
+        position: relative;
+        height: 30px;
+        width: 80px;
+        text-align: center;
+        line-height: 30px;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .tabNav div {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 15px;
+        width: 15px;
+        text-align: center;
+        font-size: 10px;
+        line-height: 15px;
+        background-color: rosybrown;
+      }
+
+      .tabNav li:hover {
+        cursor: pointer;
+      }
+
+      .bgcPink {
+        background-color: pink;
+      }
+
+      .tabNav input {
+        width: 50px;
+        border: none;
+      }
+      /* addTab */
+
+      .addTab {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+      }
+      /* tabContent */
+
+      .tabContent li {
+        display: none;
+        height: 200px;
+        border: none;
+      }
+
+      .tabContent :first-child {
+        display: block;
+      }
+
+      .tabContent input {
+        width: 800px;
+        height: 200px;
+        border: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- tab栏切换 -->
+    <div class="tab" id="tab1">
+      <nav>
+        <ul class="tabNav">
+          <li class="bgcPink">
+            <span>tab1</span>
+            <div>x</div>
+          </li>
+          <li>
+            <span>tab2</span>
+            <div>x</div>
+          </li>
+          <li>
+            <span>tab3</span>
+            <div>x</div>
+          </li>
+          <li>
+            <span>tab4</span>
+            <div>x</div>
+          </li>
+        </ul>
+        <button class="addTab">+</button>
+      </nav>
+
+      <article>
+        <ul class="tabContent">
+          <li>content1</li>
+          <li>content2</li>
+          <li>content3</li>
+          <li>content4</li>
+        </ul>
+      </article>
+    </div>
+    <!-- 引入js文件 -->
+    <script>
+      // tab栏切换
+      var that = null;
+      class TabColumn {
+        constructor(id) {
+          // 全局变量that用于存放指向实例对象的this
+          that = this;
+          this.tab = document.querySelector(id);
+          this.tabNav = this.tab.querySelector(".tabNav");
+          this.tabContent = this.tab.querySelector(".tabContent");
+          this.addTab = this.tab.querySelector(".addTab");
+          // 加小括号（）， 创建实例对象时就调用该函数
+          this.initialize();
+        }
+
+        // 注册点击事件
+        initialize() {
+          that.getNode();
+          // 不加小括号（）不会代码调用，需要事件触发
+          this.addTab.onclick = this.addTabs;
+          for (var i = 0; i < this.navLis.length; i++) {
+            this.navLis[i].setAttribute("data-index", i);
+            this.navLis[i].onclick = this.toggleTab;
+            this.delete[i].onclick = this.removeTab;
+            this.navSpans[i].ondblclick = this.editTab;
+            this.contentLis[i].ondblclick = this.editTab;
+          }
+        }
+
+        // bug：点击addtab后添加的元素（navLis，contentLis，remove）没有注册点击事件
+        // 解决：获取navLis和contentLis
+        getNode() {
+          this.navLis = this.tab.querySelectorAll("nav li");
+          this.contentLis = this.tab.querySelectorAll("article li");
+          this.delete = this.tab.querySelectorAll(".tabNav div");
+          this.navSpans = this.tabNav.querySelectorAll("span");
+        }
+
+        // 1：切换
+        toggleTab() {
+          that.clearClass();
+          this.classList.add("bgcPink");
+          that.contentLis[this.getAttribute("data-index")].style.display =
+            "block";
+        }
+
+        // 将代码块封装为函数，以方便重复使用
+        clearClass() {
+          for (var i = 0; i < this.navLis.length; i++) {
+            // this指向调用者that
+            this.navLis[i].classList.remove("bgcPink");
+            this.contentLis[i].style.display = "none";
+          }
+        }
+
+        // 2：添加
+        // 新添加的作为当前
+        addTabs() {
+          that.clearClass();
+          that.tabNav.insertAdjacentHTML(
+            "beforeend",
+            '<li class="bgcPink"><span>new tab</span><div>x</div></li>'
+          );
+          that.tabContent.insertAdjacentHTML(
+            "beforeend",
+            '<li style="display:block">new content</li>'
+          );
+          // bug解决:点击addtab后元素的个数发生变化，需要再次调用initialize(),以给重新获取的所有navLis,contentLis，remove注册点击事件
+          that.initialize();
+        }
+
+        // 3：删除
+        removeTab(e) {
+          // 阻止冒泡
+          e.stopPropagation();
+          var index = this.parentNode.getAttribute("data-index");
+          if (that.navLis.length > 1) {
+            that.navLis[index].remove();
+            that.contentLis[index].remove();
+          }
+          // bug解决：点击addtab后元素的个数发生变化，需要再次调用initialize(),以给重新获取的所有navLis,contentLis，remove注册点击事件
+          that.initialize();
+          // 若删除的为非当前选定状态的元素，则不改变选定状态
+          if (that.tab.querySelector(".bgcPink")) {
+          } else {
+            // bug解决：删除元素后，让其前一个元素处于选定状态，代码调用点击事件
+            index--;
+            that.navLis[index] && that.navLis[index].click();
+          }
+        }
+
+        // 4：修改
+        editTab() {
+          // 先获取元素内的原本显示文本。
+          var str = this.innerHTML;
+          // 禁止双击选定文字
+          window.getSelection
+            ? window.getSelection().removeAllRanges()
+            : document.selection.empty();
+          // 双击后用input表单获取用户输入
+          this.innerHTML = '<input type="text">';
+          // 将原文本作为input表单的默认输入。可以修改
+          var input = this.querySelector("input");
+          input.value = str;
+          // 双击后，让input自动获取焦点并让内容处于选中状态
+          input.focus();
+          input.select();
+          // input表单失去焦点，就将内容赋值给span
+          input.onblur = function () {
+            // 通过节点寻找元素
+            this.parentNode.innerHTML = this.value;
+            this.remove();
+          };
+
+          // 用户按下enter，调用 blur事件
+          input.onkeyup = function (e) {
+            if (e.keyCode == 13) {
+              input.blur();
+            }
+          };
+        }
+      }
+      new TabColumn("#tab1");
+    </script>
+  </body>
+</html>

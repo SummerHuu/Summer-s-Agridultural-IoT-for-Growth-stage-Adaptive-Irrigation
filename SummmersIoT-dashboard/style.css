@@ -1,0 +1,292 @@
+/*清除元素默认的内外边距*/
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+/*取消li的小黑点*/
+li {
+  list-style: none;
+}
+/*取消表单的轮廓线*/
+input,
+textarea {
+  outline: none;
+}
+/*防止用户拖拽文本域*/
+textarea {
+  resize: none;
+}
+
+/*取消按钮的边框*/
+button {
+  border: none;
+}
+/*由于每个版心都水平居中对齐，直接定义一个类名用于水平居中对齐*/
+.w {
+  width: 1200px;
+  margin: auto;
+}
+/*a链接取消下划线*/
+a {
+  text-decoration: none;
+}
+/*清除图片底侧空隙（行内/行内块默认底线对齐文本的基线）*/
+img {
+  vertical-align: middle;
+}
+
+/*清除浮动，在父盒子调用clearfix*/
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+.clearfix {
+  *zoom: 1;
+}
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f9f9f9;
+  width: auto;
+}
+h2 {
+  height: 100px;
+  line-height: 100px;
+}
+
+/* Remove list styles */
+ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 150px;
+  padding: 0;
+}
+
+/* robot car section */
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  width: 100%;
+  align-items: center; /* vertically align items in all sections */
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 350px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container button,
+.section button {
+  width: 100px;
+  height: 50px;
+  margin: 10px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.tilt-controls {
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Aligns buttons to the right */
+  gap: 10px; /* Optional: spacing between buttons */
+}
+.tilt-controls button {
+  background: #20c69f;
+  padding: 0;
+}
+
+.direction-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 60px);
+  gap: 10px;
+}
+
+.direction-grid button {
+  background: #20c69f;
+  font-size: 50px;
+  text-align: center;
+  line-height: 30px;
+}
+
+.stop {
+  background: #f44336 !important;
+}
+
+.video-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-feed {
+  /* border: 3px solid #555; */
+  /* border-radius: 10px; */
+  width: 200px;
+  /* height: 300px; */
+  /* background: black; */
+}
+.video-feed button {
+  font-size: 30px;
+  height: auto;
+  width: auto;
+  line-height: 100%;
+  background: #000000;
+}
+
+.card button {
+  all: unset; /* reset browser styles */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: #ffab00;
+  color: white;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.card button h3,
+.card button p {
+  margin: 5px 0;
+  color: white;
+  pointer-events: none; /* prevent accidental text selection */
+}
+
+.container button.active,
+.card button.active {
+  box-shadow: 0 0 10px #00c853;
+  transform: scale(1.05);
+  background-color: #042026 !important;
+}
+
+/* ========================== nodemcu section ============================*/
+h3,
+p {
+  margin: 5px 0;
+  line-height: 1.4;
+  height: auto;
+}
+
+/* pump */
+.icard button {
+  width: 220px;
+  height: 50px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  background-color: #1e88e5;
+  font-size: 20px;
+  text-align: center;
+  line-height: 30px;
+  padding: 0;
+}
+
+.icard button.active {
+  background-color: #042026; /* Green while pressed */
+  box-shadow: 0 0 10px #00c853;
+  transform: scale(1.05);
+  /* color: white; */
+}
+
+.icard input {
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 10px;
+  border: 2px solid #1e88e5;
+  text-align: center;
+}
+
+/* BLE */
+/* .spacer {
+  padding: 0 50px;
+} */
+
+span {
+  font-size: 25px;
+}
+
+/* Card styles */
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 220px;
+  max-width: 350px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px #ccc;
+  background-color: #fff;
+}
+
+button {
+  height: 40px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: #767a77;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.inserter {
+  height: 70%;
+  width: 5px;
+  background-color: #042026;
+}
+
+.green {
+  background-color: #4caf50;
+  color: white;
+}
+
+.gray {
+  background-color: #ccc;
+  color: black;
+}
+
+/* Prevent long-press actions on buttons (especially for mobile) */
+button {
+  user-select: none; /* Prevent text selection */
+  -webkit-user-select: none; /* For Safari */
+  -ms-user-select: none; /* For Internet Explorer */
+  -moz-user-select: none; /* For Firefox */
+  -webkit-touch-callout: none; /* Disable long-press menu on iOS */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+  touch-action: manipulation; /* Allow taps but block select/zoom */
+}
+input,
+textarea {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
