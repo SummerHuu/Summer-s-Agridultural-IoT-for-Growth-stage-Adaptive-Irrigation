@@ -2,7 +2,7 @@ The project is designed to water a plant with volumes adapted to varying needs o
 
 Project module:
 
-  -Robot car: esp32cam, unor3, ei-growth-stages-detection-arduino-1.0.1 (AI model for growth stages detection by image recognition),
+  -Robot car: esp32cam (no image recognition) / esp32cam - added image recognition, unor3, ei-growth-stages-detection-arduino-1.0.1 (AI model for growth stages detection by image recognition),
  
   -Sensor node: NodeMCU esp32,
   
