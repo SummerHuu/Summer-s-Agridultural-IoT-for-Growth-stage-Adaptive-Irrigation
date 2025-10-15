@@ -7,3 +7,4 @@ Project module:
   -Sensor node: NodeMCU esp32,
   
   -Customized IoT web app: SummmersIoT-dashboard,
+<img width="1820" height="962" alt="image" src="https://github.com/user-attachments/assets/99e04b34-8e5c-4185-ac61-8adafa31ad19" />
